@@ -1,17 +1,12 @@
 import random
 from typing import Optional
-
 from game.tile_action import TileAction
 from game.coordinate import Coordinate
 from game.game_phase import GamePhase
 from game.rotation import Rotation
 from game.tile import Tile
-#from base_deck import base_tile_counts, base_tiles
-#from wingedsheep.carcassonne.tile_sets.inns_and_cathedrals_deck import inns_and_cathedrals_tiles, \
-#    inns_and_cathedrals_tile_counts
-#from wingedsheep.carcassonne.tile_sets.supplementary_rules import SupplementaryRule
 from game.tile_sets import TileSet
-
+from base_deck import base_tile_counts
 
 class CarcassonneGameState:
 
@@ -22,10 +17,8 @@ class CarcassonneGameState:
             board_size: (int, int) = (35, 35),
             starting_position: Coordinate = Coordinate(17, 17)
     ):
-        #self.deck = self.initialize_deck(tile_sets=tile_sets)
         self.board: [[Tile]] = [[None for column in range(board_size[1])] for row in range(board_size[0])]
         self.starting_position: Coordinate = starting_position
-        #self.next_tile = self.deck.pop(0)
         self.players = players
         self.meeples = [7 for _ in range(players)]
         self.placed_meeples = [[] for _ in range(players)]
@@ -34,6 +27,7 @@ class CarcassonneGameState:
         self.phase = GamePhase.TILES
         self.last_tile_action: Optional[TileAction] = None
         self.last_river_rotation: Rotation = Rotation.NONE
+        self.tile_counts = base_tile_counts
 
     def add_tile(self, row: int, column: int, tile: Tile):
         row_pos = self.starting_position.row + row
@@ -78,6 +72,7 @@ class CarcassonneGameState:
                     row.append(None)
 
         self.board[row_pos][col_pos] = tile
+        self.tile_counts[tile.description] -= 1
 
 
     def get_tile(self, row: int, column: int):
@@ -90,14 +85,14 @@ class CarcassonneGameState:
 
     def get_min_max_coord(self):
         col_ind = []
-        row_ind = [] 
+        row_ind = []
         for i in range(len(self.board)):
             for j in range(len(self.board[0])):
                 if self.board[i][j] is not None:
                     col_ind.append(i)
                     row_ind.append(j)
 
-        return min(col_ind), min(row_ind), max(col_ind), max(row_ind)         
+        return min(col_ind), min(row_ind), max(col_ind), max(row_ind)
 
     def empty_board(self):
         for row in self.board:

@@ -3,11 +3,14 @@ from tile_classifier import TilesClassifier
 from game.carcassonne_game_state import CarcassonneGameState
 from tile_position_finder import TilePositionFinder
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw
+from base_deck import base_tiles, base_tile_counts
 import os
+
 
 class FailedToRecognizeError(Exception):
     pass
+
 
 class CarcassoneBoard:
     def __init__(self, det_model_path, cls_model_path):
@@ -52,6 +55,43 @@ class CarcassoneBoard:
 
         return img
 
+    def get_tiles_left(self):
+        tile_counts = self.game_state.tile_counts
+        start_top = 20
+        start_left = 20
+        tile_size = 64
+        interval_y = 15
+        interval_x = tile_size * 4
+        tile_count_x = 2
+        tile_count_y = 12
+        text_int = 10
+        image = Image.new('RGB', (tile_size * tile_count_x + interval_x * tile_count_x + start_left,
+                                  tile_size * tile_count_y + start_top * 2 + interval_y * (tile_count_y - 1)),
+                          (0, 0, 0))
+
+        for j in range(tile_count_x):
+            for i, tile_class in enumerate(list(base_tiles.keys())[tile_count_y * j:tile_count_y * (j + 1)]):
+                tile_img = Image.open(base_tiles[tile_class].image)
+                tile_img = tile_img.resize((tile_size, tile_size))
+                left = start_left + tile_size * j + interval_x * j
+                right = left + tile_size
+                top = start_top + tile_size * i + interval_y * i
+                bottom = top + tile_size
+                image.paste(tile_img, (left, top, right, bottom))
+
+        image_draw = ImageDraw.Draw(image)
+
+        for j in range(tile_count_x):
+            for i, tile_class in enumerate(list(base_tiles.keys())[tile_count_y * j:tile_count_y * (j + 1)]):
+                left = start_left + tile_size * j + interval_x * j
+                right = left + tile_size
+                top = start_top + tile_size * i + interval_y * i
+                bottom = top + tile_size
+                image_draw.text((right + text_int, top + text_int), tile_class, (237, 230, 211))
+                tiles_left_text = f'tiles: {tile_counts[tile_class]}'
+                image_draw.text((right + text_int, top + text_int + 20), tiles_left_text, (237, 230, 211))
+        return image
+
     def get_possible_positions(self, new_tile_img: Image):
         new_tile = self.recognize_tile(new_tile_img)
         if new_tile is None:
@@ -81,5 +121,5 @@ class CarcassoneBoard:
             pos_img[coord_y * tile_size:(coord_y + 1) * tile_size,
             coord_x * tile_size:(coord_x + 1) * tile_size] = np.array([173, 255, 47])
 
-        new_tile_def_img = Image.open(new_tile.image).resize((64, 64))
+        new_tile_def_img = Image.open(new_tile.image).resize((512, 512))
         return pos_img, new_tile_def_img
