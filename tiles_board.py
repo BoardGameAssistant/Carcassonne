@@ -1,11 +1,10 @@
-from tile_detector import TilesDetector
-from tile_classifier import TilesClassifier
-from game.carcassonne_game_state import CarcassonneGameState
-from tile_position_finder import TilePositionFinder
+from .tile_detector import TilesDetector
+from .tile_classifier import TilesClassifier
+from .game.carcassonne_game_state import CarcassonneGameState
+from .tile_position_finder import TilePositionFinder
 import numpy as np
 from PIL import Image, ImageDraw
-from base_deck import base_tiles, base_tile_counts
-import os
+from .base_deck import base_tiles
 
 
 class FailedToRecognizeError(Exception):
@@ -48,7 +47,7 @@ class CarcassoneBoard:
                     coord_x = j - min_x
                     coord_y = i - min_y
                     tile = self.game_state.board[i][j]
-                    tile_img = Image.open(tile.image)
+                    tile_img = Image.open('carcassone/' + tile.image)
                     tile_img = np.asarray(tile_img.resize((tile_size, tile_size)))
                     img[coord_y * 64:(coord_y + 1) * tile_size,
                     coord_x * tile_size:(coord_x + 1) * tile_size] = tile_img
@@ -71,7 +70,7 @@ class CarcassoneBoard:
 
         for j in range(tile_count_x):
             for i, tile_class in enumerate(list(base_tiles.keys())[tile_count_y * j:tile_count_y * (j + 1)]):
-                tile_img = Image.open(base_tiles[tile_class].image)
+                tile_img = Image.open('carcassone/' + base_tiles[tile_class].image)
                 tile_img = tile_img.resize((tile_size, tile_size))
                 left = start_left + tile_size * j + interval_x * j
                 right = left + tile_size
@@ -110,7 +109,7 @@ class CarcassoneBoard:
                     coord_x = j - min_x + 1
                     coord_y = i - min_y + 1
                     tile = self.game_state.board[i][j]
-                    tile_img = Image.open(tile.image)
+                    tile_img = Image.open('carcassone/' + tile.image)
                     tile_img = np.asarray(tile_img.resize((tile_size, tile_size)))
                     pos_img[coord_y * tile_size:(coord_y + 1) * tile_size,
                     coord_x * tile_size:(coord_x + 1) * tile_size] = tile_img
@@ -121,5 +120,5 @@ class CarcassoneBoard:
             pos_img[coord_y * tile_size:(coord_y + 1) * tile_size,
             coord_x * tile_size:(coord_x + 1) * tile_size] = np.array([173, 255, 47])
 
-        new_tile_def_img = Image.open(new_tile.image).resize((512, 512))
+        new_tile_def_img = Image.open('carcassone/' + new_tile.image).resize((512, 512))
         return pos_img, new_tile_def_img

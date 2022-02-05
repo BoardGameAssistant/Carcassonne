@@ -1,6 +1,5 @@
 from enum import Enum
 
-
 class GamePhase(Enum):
     TILES = "tiles"
     MEEPLES = "meeples"

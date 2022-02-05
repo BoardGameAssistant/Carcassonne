@@ -3,11 +3,11 @@ import sys
 from typing import Set
 import numpy as np
 
-from game.connection import Connection
-from game.farmer_connection import FarmerConnection
-from game.side import Side
-from game.terrain_type import TerrainType
-from game.side_modification_util import SideModificationUtil
+from .connection import Connection
+from .farmer_connection import FarmerConnection
+from .side import Side
+from .terrain_type import TerrainType
+from .side_modification_util import SideModificationUtil
 
 np.set_printoptions(suppress=True, linewidth=np.nan, threshold=sys.maxsize)
 

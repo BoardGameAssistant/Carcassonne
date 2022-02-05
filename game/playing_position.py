@@ -1,7 +1,6 @@
 import json
 
-from game.coordinate import Coordinate
-
+from .coordinate import Coordinate
 
 class PlayingPosition:
     def __init__(self, coordinate: Coordinate, turns: int):

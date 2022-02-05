@@ -1,14 +1,14 @@
 
-from game.carcassonne_game_state import CarcassonneGameState
-from game.coordinate import Coordinate
-from game.playing_position import PlayingPosition
-from game.tile import Tile
-from game.tile_fitter import TileFitter
+from .game.carcassonne_game_state import CarcassonneGameState
+from .game.coordinate import Coordinate
+from .game.playing_position import PlayingPosition
+from .game.tile import Tile
+from .game.tile_fitter import TileFitter
 
 
 class TilePositionFinder:
     @staticmethod
-    def possible_playing_positions(game_state: CarcassonneGameState, tile_to_play: Tile) -> [PlayingPosition]:
+    def possible_playing_positions(game_state: CarcassonneGameState, tile_to_play: Tile):
         if game_state.empty_board():
             return [PlayingPosition(coordinate=game_state.starting_position, turns=0)]
 

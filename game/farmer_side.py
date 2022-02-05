@@ -1,5 +1,5 @@
 from enum import Enum
-from game.side import Side
+from .side import Side
 
 
 class FarmerSide(Enum):

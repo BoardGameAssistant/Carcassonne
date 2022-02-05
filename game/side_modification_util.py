@@ -1,8 +1,7 @@
-
-from game.connection import Connection
-from game.farmer_connection import FarmerConnection
-from game.farmer_side import FarmerSide
-from game.side import Side
+from .connection import Connection
+from .farmer_connection import FarmerConnection
+from .farmer_side import FarmerSide
+from .side import Side
 
 class SideModificationUtil:
 

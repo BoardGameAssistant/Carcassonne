@@ -1,11 +1,9 @@
 from PIL import Image
 import torchvision.transforms as transforms
-from torchvision.models import resnet18
-from base_deck import base_tiles, base_tile_counts
 import torch
-import cv2
-import numpy as np
-from tilenames import class_names
+from torchvision.models import resnet18
+from .base_deck import base_tiles
+from .tilenames import class_names
 
 class TilesClassifier:
     def __init__(self, model_path):
@@ -23,7 +21,7 @@ class TilesClassifier:
         self.model.eval()
         tile_img = self.transform(tile)
         outputs = self.model(tile_img.unsqueeze(0))
-        score, predicted = torch.max(outputs, dim=1)
+        _, predicted = torch.max(outputs, dim=1)
         classname = self.classes[predicted.item()]
         if classname.split('_')[-1].isdigit():
             digit = classname.split('_')[-1]

@@ -1,9 +1,9 @@
 import os
-from game.connection import Connection
-from game.farmer_connection import FarmerConnection
-from game.side import Side
-from game.tile import Tile
-from game.farmer_side import FarmerSide
+from .game.connection import Connection
+from .game.farmer_connection import FarmerConnection
+from .game.side import Side
+from .game.tile import Tile
+from .game.farmer_side import FarmerSide
 
 base_tiles = {
     "chapel_with_road": Tile(

@@ -1,5 +1,5 @@
-from game.coordinate import Coordinate
-from game.tile import Tile
+from .coordinate import Coordinate
+from .tile import Tile
 
 class Action:
     pass

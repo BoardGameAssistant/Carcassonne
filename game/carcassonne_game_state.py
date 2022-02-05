@@ -1,28 +1,28 @@
 import random
 from typing import Optional
-from game.tile_action import TileAction
-from game.coordinate import Coordinate
-from game.game_phase import GamePhase
-from game.rotation import Rotation
-from game.tile import Tile
-from game.tile_sets import TileSet
-from base_deck import base_tile_counts
+from .tile_action import TileAction
+from .coordinate import Coordinate
+from .game_phase import GamePhase
+from .rotation import Rotation
+from .tile import Tile
+from .tile_sets import TileSet
+from ..base_deck import base_tile_counts
 
 class CarcassonneGameState:
 
     def __init__(
             self,
-            tile_sets: [TileSet] = (TileSet.BASE, TileSet.THE_RIVER, TileSet.INNS_AND_CATHEDRALS),
+            tile_sets = (TileSet.BASE, TileSet.THE_RIVER, TileSet.INNS_AND_CATHEDRALS),
             players: int = 2,
-            board_size: (int, int) = (35, 35),
+            board_size = (35, 35),
             starting_position: Coordinate = Coordinate(17, 17)
     ):
-        self.board: [[Tile]] = [[None for column in range(board_size[1])] for row in range(board_size[0])]
+        self.board = [[None for column in range(board_size[1])] for row in range(board_size[0])]
         self.starting_position: Coordinate = starting_position
         self.players = players
         self.meeples = [7 for _ in range(players)]
         self.placed_meeples = [[] for _ in range(players)]
-        self.scores: [int] = [0 for _ in range(players)]
+        self.scores = [0 for _ in range(players)]
         self.current_player = 0
         self.phase = GamePhase.TILES
         self.last_tile_action: Optional[TileAction] = None
@@ -104,8 +104,8 @@ class CarcassonneGameState:
     def is_terminated(self) -> bool:
         return self.next_tile is None
 
-    def initialize_deck(self, tile_sets: [TileSet]):
-        deck: [Tile] = []
+    def initialize_deck(self, tile_sets):
+        deck = []
         new_tiles = []
 
         if TileSet.BASE in tile_sets:

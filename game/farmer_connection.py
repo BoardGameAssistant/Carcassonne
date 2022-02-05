@@ -1,6 +1,6 @@
 import json
-from game.farmer_side import FarmerSide
-from game.side import Side
+from .farmer_side import FarmerSide
+from .side import Side
 
 
 class FarmerConnection:

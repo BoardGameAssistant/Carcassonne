@@ -1,8 +1,8 @@
 from typing import Set
 
-from game.carcassonne_game_state import CarcassonneGameState
-from game.side import Side
-from game.tile import Tile
+from .carcassonne_game_state import CarcassonneGameState
+from .side import Side
+from .tile import Tile
 
 
 class TileFitter:
